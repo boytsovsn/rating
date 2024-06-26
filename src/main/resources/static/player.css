@@ -1,0 +1,55 @@
+body {
+     padding: 50px;
+     color: cornflowerblue;
+}
+
+.langs {
+    width: 600px;
+}
+
+.langs td, th {
+    padding: 0px;
+    width: 300px;
+}
+
+.langs1 {
+    width: 250px;
+}
+
+.langs1 td, th {
+    padding: 0px;
+    width: 125px;
+}
+
+.players {
+    border: 1px solid steelblue;
+    width: 300px;
+    border-collapse: collapse;
+}
+
+.players tr td, th {
+    padding: 5px;
+    border: 1px solid steelblue;
+}
+
+h3 {
+    background-image: url("/listmark.png");
+    background-repeat: no-repeat;
+    padding: 2px;
+    padding-left: 30px;
+}
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
+button {
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}
+
+.form-control {
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}

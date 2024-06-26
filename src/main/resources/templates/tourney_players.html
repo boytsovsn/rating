@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all tourney players</title>
+    <link href="/player.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+</head>
+<body>
+    <table class="langs">
+        <tr>
+            <td><h3 th:text="#{lang-switcher-header}">Select language</h3></td>
+            <td>
+                <table class="langs1">
+                    <tr>
+                        <td><a href="#" th:href="@{/tourneyplayer(lang=en, competition_id=${competition_id}, tourney_id=${tourney_id})}" th:text="#{en-lang-switch-button-caption}">Language-EN</a></td>
+                        <td><a href="#" th:href="@{/tourneyplayer(lang=ru, competition_id=${competition_id}, tourney_id=${tourney_id})}" th:text="#{ru-lang-switch-button-caption}">Language-RU</a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <h3 th:text="${competition_title}+'/'+${tourney_title}">Competition. Tourney.</h3>
+    <h3 th:text="#{players-table-header}">Players:</h3>
+    <form id="add_players_form" th:action="@{/tourneyplayer(competition_id=${competition_id}, tourney_id=${tourney_id})}" th:method="post" th:object="${checkedPlayersDto}">
+        <table class="players">
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th th:text="#{player-field-id}">ID</th>
+                <th th:text="#{player-field-rating}">Rating</th>
+                <th th:text="#{player-field-name}">Name</th>
+                <th th:text="#{player-field-birthDate}">Birth Date</th>
+                <th th:text="#{player-field-location}">Location</th>
+                <th th:text="#{player-field-gender}">Gender</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="player, iterStat : ${players}" th:id="'player-' + ${player.id}">
+                <td><input type="checkbox" th:value="${player.id}" th:field="*{checkedPlayers}"/></td>
+                <td th:text="${player.id}">1</td>
+                <td th:text="${player.ratingCurrent}">0</td>
+                <td th:text="${player.name}">Evgeniy Onegin</td>
+                <td th:text="${player.birthDate}">2000-01-01</td>
+                <td th:text="${player.location}">Tomsk</td>
+                <td th:text="${player.gender} ? #{player-field-gender-male} : #{player-field-gender-female}">Male</td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <button type="submit" th:text="#{add-button-caption}">Add</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <h3 th:text="#{tourney-players-table-header}">Tourney players:</h3>
+    <table class="players">
+        <thead>
+        <tr>
+            <th th:text="#{player-field-id}">ID</th>
+            <th th:text="#{tourney-field-title}">Title</th>
+            <th th:text="#{player-field-name}">Name</th>
+            <th th:text="#{rating-in}">Rating in</th>
+            <th th:text="#{rating-current}">Rating current</th>
+            <th th:text="#{rating-out}">Rating out</th>
+            <th th:text="#{players-table-column-action}">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tourneyPlayer : ${tourneyPlayers}" th:id="'tourney-player-' + ${tourneyPlayer.id}">
+            <td th:text="${tourneyPlayer.id}">1</td>
+            <td th:text="${tourneyPlayer.tourneyTitle}">Tourney</td>
+            <td th:text="${tourneyPlayer.playerName}">Evgeniy Onegin</td>
+            <td th:text="${tourneyPlayer.ratingIn}">0</td>
+            <td th:text="${tourneyPlayer.ratingCurrent}">0</td>
+            <td th:text="${tourneyPlayer.ratingOut}">0</td>
+            <td>
+                <form id="delete-form" th:action="@{/tourneyplayer/{id}(id=${tourneyPlayer.id}, competition_id=${competition_id}, tourney_id=${tourney_id})}" th:method="delete">
+                    <button type="submit" th:text="#{delete-button-caption}">Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7">
+                <form id="rating-form" th:action="@{/game(competition_id=${competition_id}, tourney_id=${tourney_id})}" th:method="post">
+                    <button type="submit" th:text="#{save-rating-button-caption}">Save rating
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/game(competition_id=${competition_id}, tourney_id=${tourney_id})}"  href="gamess.html"><h3 th:text="#{games}+' '+${tourney_type}">Games</h3></a>
+    <a th:href="@{/tourney(competition_id=${competition_id})}"  href="tourneys.html"><h3 th:text="#{back}">Back</h3></a>
+</body>
+</html>

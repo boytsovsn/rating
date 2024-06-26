@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all games</title>
+    <link href="/player.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+</head>
+<body>
+
+<table class="langs">
+    <tr>
+        <td><h3 th:text="#{lang-switcher-header}">Select language</h3></td>
+        <td>
+            <table class="langs1">
+                <tr>
+                    <td><a href="#" th:href="@{/game(lang=en, competition_id=${competition_id}, tourney_id=${tourney_id})}" th:text="#{en-lang-switch-button-caption}">Language-EN</a></td>
+                    <td><a href="#" th:href="@{/game(lang=ru, competition_id=${competition_id}, tourney_id=${tourney_id})}" th:text="#{ru-lang-switch-button-caption}">Language-RU</a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<h3 th:text="#{games-table-header}">Games:</h3>
+
+<form id="put-form" th:action="@{/game(competition_id=${competition_id}, tourney_id=${tourney_id})}" th:method="put" th:object="${games_result}">
+<table class="players">
+    <thead>
+    <tr>
+        <th th:text="#{player-field-id}">ID</th>
+        <th th:text="#{game-player1-name}">Player 1</th>
+        <th th:text="#{game-player1-rating}">Rating 1</th>
+        <th th:text="#{game-player2-name}">Player 2</th>
+        <th th:text="#{game-player2-rating}">Rating 2</th>
+        <th th:text="#{game-field-result}">Result</th>
+        <th th:text="#{game-action-result}">Set result</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="game, gameState : ${games}">
+        <td th:text="${game.id}">1</td>
+        <td th:text="${game.player1Name}">Player 1</td>
+        <td th:text="${game.rating1}">100.1</td>
+        <td th:text="${game.player2Name}">Player 2</td>
+        <td th:text="${game.rating2}">100.2</td>
+        <td th:text="${game.result}">NO_RESULT</td>
+        <td>
+               <select  th:id="'game-result-input' + ${game.id}" class="form-control" th:field="*{selectedResults}" type="text">
+<!--                    <option value="" th:text="#{id-field-should-has-expected-size} + ' ' + #{game-field-result}">Select result</option>-->
+                    <option th:each="selectedResult : *{resultSet}" th:value="${selectedResult}" th:text="${selectedResult.name}"></option>
+                </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7"><button type="submit" th:text="#{calculate-button-caption}">Calculate</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</form>
+<a th:href="@{/tourneyplayer(competition_id=${competition_id}, tourney_id=${tourney_id})}"  href="tourneys.html"><h3 th:text="#{back}">Back</h3></a>
+</body>
+</html>

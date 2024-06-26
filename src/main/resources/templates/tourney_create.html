@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit tourney</title>
+    <link href="/player_edit.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Tourney creation -->
+<form id="create-form" th:action="@{/tourney(competition_id=${competition_id})}" th:method="post" th:object="${tourneyDto}">
+    <h3 th:text = "#{tourney-form-header}">Tourney Info:</h3>
+    <div class="row">
+        <label for="tourney-competition-input" th:text="#{tourney-field-competition} + ':'">Competition:</label>
+        <select class="form-control" th:field="${tourneyDto.competitionId}" name="competitionId" type="text" id="tourney-competition-input">
+            <option value="" th:text="#{id-field-should-has-expected-size} + ' ' + #{tourney-field-competition}">Select competition</option>
+            <option th:each="competition : ${tourneyDto.competitions}" th:value="${competition.id}" th:text="${competition.title}"></option>
+        </select>
+        <div class="errors" th:if="${#fields.hasErrors('competitionId')}" th:errors="${tourneyDto.competitionId}">Wrong competition error</div>
+    </div>
+    <div class="row">
+        <label for="tourney-name-input" th:text="#{tourney-field-title} + ':'">Name:</label>
+        <input id="tourney-name-input" name="title" type="text" th:value="${tourneyDto.title}" value="Tomsk championship"/>
+        <div class="errors" th:if="${#fields.hasErrors('title')}" th:errors="${tourneyDto.title}">Wrong tourney name error</div>
+    </div>
+    <div class="row">
+        <label for="tourney-type-input" th:text="#{tourney-field-type} + ':'">Type:</label>
+        <select class="form-control" th:field="${tourneyDto.type}" type="text" name="type" id="tourney-type-input">
+            <option value="${Circle}" th:text="#{id-field-should-has-expected-size} + ' ' + #{tourney-field-type}">Select type</option>
+            <option th:each="type : ${tourneyDto.types}" th:value="${type}" th:text="${type.name}"></option>
+        </select>
+        <div class="errors" th:if="${#fields.hasErrors('type')}" th:errors="${tourneyDto.type.ordinal()}">Wrong tourney type error</div>
+    </div>
+    <div class="row">
+        <label for="tourney-rank-input" th:text="#{tourney-field-rank} + ':'">Rank:</label>
+        <select class="form-control" th:field="${tourneyDto.rank}" type="text" name="rank" id="tourney-rank-input">
+            <option value="${Final_I}" th:text="#{id-field-should-has-expected-size} + ' ' + #{tourney-field-rank}">Select rank</option>
+            <option th:each="rank : ${tourneyDto.ranks}" th:value="${rank}" th:text="${rank.name}"></option>
+        </select>
+        <div class="errors" th:if="${#fields.hasErrors('rank')}" th:errors="${tourneyDto.rank.ordinal()}">Wrong tourney rank error</div>
+    </div>
+    <div class="row">
+        <label for="tourney-stage-input" th:text="#{tourney-field-stage} + ':'">Stage:</label>
+        <select class="form-control" th:field="${tourneyDto.stage}" type="text" name="stage" id="tourney-stage-input">
+            <option value="${Finals}" th:text="#{id-field-should-has-expected-size} + ' ' + #{tourney-field-stage}">Select stage</option>
+            <option th:each="stage : ${tourneyDto.stages}" th:value="${stage}" th:text="${stage.name}"></option>
+        </select>
+        <div class="errors" th:if="${#fields.hasErrors('stage')}" th:errors="${tourneyDto.stage.ordinal()}">Wrong tourney stage error</div>
+    </div>
+    <div class="row">
+        <button type="submit" th:text="#{create-button-caption}">Create</button>
+        <a href="tourneys.html" th:href="@{/tourney(competition_id=${competition_id})}"><button type="button" th:text="#{cancel-button-caption}">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>

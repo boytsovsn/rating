@@ -1,0 +1,46 @@
+
+body {
+    padding: 50px;
+    color: cornflowerblue;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input:read-only {
+    background: lightgray;
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}
+
+input {
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}
+
+button {
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}
+
+.row {
+    margin-top: 10px;
+}
+
+h3 {
+    background-image: url("/listmark.png");
+    background-repeat: no-repeat;
+    padding: 2px;
+    padding-left: 30px;
+}
+
+.errors {
+    color: red;
+}
+
+.form-control {
+    color: cornflowerblue;
+    border: 1px solid steelblue;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create player</title>
+    <link href="/player_edit.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Player creation -->
+<form id="create-form" th:action="@{/player}" method="post" th:method="post"  th:object="${playerDto}">
+    <h3 th:text = "#{player-form-header}">Player Info:</h3>
+
+    <div class="row">
+        <label for="player-title-input" th:text="#{player-field-name} + ':'">Name:</label>
+        <input id="player-title-input" name="name" type="text" th:value="${playerDto.name}" value="Evgeniy Cramarov"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="${playerDto.name}">Wrong player name error</div>
+    </div>
+    <div class="row">
+        <label for="player-birthPlace-input" th:text="#{player-field-birthPlace} + ':'">Birth place:</label>
+        <input id="player-birthPlace-input" name="birthPlace" type="text" th:value="${playerDto.birthPlace}" value="Tomsk"/>
+        <div class="errors" th:if="${#fields.hasErrors('birthPlace')}" th:errors="${playerDto.birthPlace}">Wrong player birth place error</div>
+    </div>
+    <div class="row">
+        <label for="player-birthDate-input" th:text="#{player-field-birthDate} + ':'">Birth date:</label>
+        <input id="player-birthDate-input" name="birthDate" type="date" th:value="${playerDto.birthDate}" value="1990-01-01"/>
+        <div class="errors" th:if="${#fields.hasErrors('birthDate')}" th:errors="${playerDto.birthDate}">Wrong player birth date error</div>
+    </div>
+    <div class="row">
+        <label for="player-location-input" th:text="#{player-field-location} + ':'">Location:</label>
+        <input id="player-location-input" name="location" type="text" th:value="${playerDto.location}" value="Tomsk"/>
+        <div class="errors" th:if="${#fields.hasErrors('location')}" th:errors="${playerDto.location}">Wrong player location error</div>
+    </div>
+    <div class="row">
+        <label th:text="#{player-field-gender} + ':'">Sex:</label>
+        <div class="form-group">
+            <label for="player-field-gender-male_id" th:text="#{player-field-gender-male}">Male</label>
+            <input id="player-field-gender-male_id" name="gender" type="radio" th:checked="${playerDto.gender} ? ${true}" th:value="${true}"/>
+            <br>
+            <label for="player-field-gender-female_id" th:text="#{player-field-gender-female}">Female</label>
+            <input id="player-field-gender-female_id" name="gender" type="radio" th:checked="${!playerDto.gender} ? ${true}" th:value="${false}"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="#{create-button-caption}">Create</button>
+        <a href="list.html" th:href="@{/}"><button type="button" th:text="#{cancel-button-caption}">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>

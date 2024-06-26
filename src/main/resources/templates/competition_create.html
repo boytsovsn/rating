@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit competition</title>
+    <link href="/player_edit.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Competition creation -->
+<form id="create-form" th:action="@{/competition}" th:method="post" th:object="${competitionDto}">
+    <h3 th:text = "#{competition-form-header}">Player Info:</h3>
+    <div class="row">
+        <label for="competition-name-input" th:text="#{competition-field-title} + ':'">Name:</label>
+        <input id="competition-name-input" name="title" type="text" th:value="${competitionDto.title}" value="Tomsk championship"/>
+        <div class="errors" th:if="${#fields.hasErrors('title')}" th:errors="${competitionDto.title}">Wrong competition name error</div>
+    </div>
+    <div class="row">
+        <label for="competition-date-input" th:text="#{competition-field-date} + ':'">Start date:</label>
+        <input id="competition-date-input" name="date" type="date" th:value="${competitionDto.date}" value="2000-01-01"/>
+        <div class="errors" th:if="${#fields.hasErrors('date')}" th:errors="${competitionDto.date}">Wrong competition date error</div>
+    </div>
+    <div class="row">
+        <label for="competition-location-input" th:text="#{competition-field-location} + ':'">Location:</label>
+        <input id="competition-location-input" name="location" type="text" th:value="${competitionDto.location}" value="Tomsk"/>
+        <div class="errors" th:if="${#fields.hasErrors('location')}" th:errors="${competitionDto.location}">Wrong competition location error</div>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="#{create-button-caption}">Create</button>
+        <a href="competitions.html" th:href="@{/competition}"><button type="button" th:text="#{cancel-button-caption}">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>

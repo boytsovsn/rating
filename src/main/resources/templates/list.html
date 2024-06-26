@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all players</title>
+    <link href="/player.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+</head>
+<body>
+
+<table class="langs">
+    <tr>
+        <td><h3 th:text="#{lang-switcher-header}">Select language</h3></td>
+        <td>
+            <table class="langs1">
+               <tr>
+                  <td><a href="#" th:href="@{/(lang=en)}" th:text="#{en-lang-switch-button-caption}">Language-EN</a></td>
+                  <td><a href="#" th:href="@{/(lang=ru)}" th:text="#{ru-lang-switch-button-caption}">Language-RU</a></td>
+               </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<h3 th:text="#{players-table-header}">Persons:</h3>
+
+<table class="players">
+    <thead>
+    <tr>
+        <th th:text="#{player-field-id}">ID</th>
+        <th th:text="#{player-field-rating}">Rating</th>
+        <th th:text="#{player-field-name}">Name</th>
+        <th th:text="#{player-field-birthDate}">Birth Date</th>
+        <th th:text="#{player-field-location}">Location</th>
+        <th th:text="#{player-field-gender}">Gender</th>
+        <th th:text="#{players-table-column-action}">Action</th>
+        <th th:text="#{players-table-column-action}">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player : ${players}">
+        <td th:text="${player.id}">1</td>
+        <td th:text="${player.ratingCurrent}">0</td>
+        <td th:text="${player.name}">Evgeniy Onegin</td>
+        <td th:text="${player.birthDate}">2000-01-01</td>
+        <td th:text="${player.location}">Tomsk</td>
+        <td th:text="${player.gender} ? #{player-field-gender-male} : #{player-field-gender-female}">Male</td>
+        <td>
+            <a th:href="@{/player(id=${player.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
+        </td>
+        <td>
+            <form id="delete-form" th:action="@{/player/{id}(id=${player.id})}" th:method="delete">
+                <button type="submit" th:text="#{delete-button-caption}">Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <a th:href="@{/player(id=0)}" href="create.html" th:text="#{create-button-caption}">Create</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/competition}"  href="competitions.html"><h3 th:text="#{competitions-table-header}">Competitions</h3></a>
+</body>
+</html>

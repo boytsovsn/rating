@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: player-mvc docker
+    title: ^project.description^
+    version: ^project.version^
+    build-timestamp: ^maven.build.timestamp^
+  messages:
+    encoding: UTF-8
+  jmx:
+    enabled: true
+#  jpa:
+#    generate-ddl: false
+#    #    generate-ddl: true
+#    hibernate:
+#      ddl-auto: none
+#  h2:
+#    console:
+#      enabled: true
+#  datasource:
+#      jdbc-url: h2:mem:mainDB
+#      username: sa
+#      password:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema1.sql
+      data-locations: classpath:data1.sql
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rating
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  rest:
+    basePath: /
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true

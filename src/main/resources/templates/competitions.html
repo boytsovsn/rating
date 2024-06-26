@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all competitions</title>
+    <link href="/player.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" th:href="@{favicon.ico}">
+</head>
+<body>
+
+<table class="langs">
+    <tr>
+        <td><h3 th:text="#{lang-switcher-header}">Select language</h3></td>
+        <td>
+            <table class="langs1">
+                <tr>
+                    <td><a href="#" th:href="@{/competition(lang=en)}" th:text="#{en-lang-switch-button-caption}">Language-EN</a></td>
+                    <td><a href="#" th:href="@{/competition(lang=ru)}" th:text="#{ru-lang-switch-button-caption}">Language-RU</a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<h3 th:text="#{competitions-table-header}">Competitons:</h3>
+
+<table class="players">
+    <thead>
+    <tr>
+        <th th:text="#{player-field-id}">ID</th>
+        <th th:text="#{competition-field-title}">Title</th>
+        <th th:text="#{competition-field-date}">Date</th>
+        <th th:text="#{competition-field-location}">Location</th>
+        <th th:text="#{players-table-column-action}">Action</th>
+        <th th:text="#{players-table-column-action}">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="competition : ${competitions}">
+        <td th:text="${competition.id}">1</td>
+        <td><a th:href="@{/tourney(competition_id=${competition.id})}" th:text="${competition.title}">Championship</a></td>
+        <td th:text="${competition.date}">2000_01_01</td>
+        <td th:text="${competition.location}">Tomsk</td>
+        <td>
+            <a th:href="@{/competition(id=${competition.id})}" href="competition_edit.html" th:text="#{edit-button-caption}">Edit</a>
+        </td>
+        <td>
+            <form id="edit-form" th:action="@{/competition/{id}(id=${competition.id})}" th:method="delete">
+                <button type="submit" th:text="#{delete-button-caption}">Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <a th:href="@{/competition(id=0)}" href="competition_create.html" th:text="#{competition-create-button-caption}">Create</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/}"  href="list.html"><h3 th:text="#{back}">Back</h3></a>
+</body>
+</html>
