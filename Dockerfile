@@ -1,4 +1,6 @@
-FROM bellsoft/liberica-openjdk-alpine-musl:21.0.1
-COPY /target/rating-1.0.0-SNAPSHOT.jar /app/app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+FROM postgres:latest
+MAINTAINER BoytsovSN <vnt@cu47487.tw1.ru>
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD postgres
+ENV POSTGRES_DB rating
