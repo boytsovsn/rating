@@ -8,9 +8,9 @@ spring:
     driver-class-name: org.postgresql.Driver
   sql:
     init:
-      mode: always
-      data-locations: classpath:data1.sql
-      schema-locations: classpath:schema1.sql
+      mode: never
+#      data-locations: classpath:data1.sql
+#      schema-locations: classpath:schema1.sql
   jpa:
     hibernate:
       ddl-auto: none
