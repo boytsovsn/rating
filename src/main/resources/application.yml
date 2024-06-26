@@ -27,7 +27,7 @@ spring:
       data-locations: classpath:data1.sql
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/rating
+    url: jdbc:postgresql://boytsovsn-rating-5cf9.twc1.net:5432/rating
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
