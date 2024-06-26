@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile_app
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     # Эти свойства перегружают соответствующие в application.yml
