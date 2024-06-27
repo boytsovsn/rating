@@ -1,2 +1,2 @@
 # rating
-Table Tennis Rating system
+Table Tennis Rating system v.1
