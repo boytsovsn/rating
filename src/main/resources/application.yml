@@ -20,9 +20,9 @@ spring:
 #      jdbc-url: h2:mem:mainDB
 #      username: sa
 #      password:
-  sql:
-    init:
-      mode: never
+#  sql:
+#    init:
+#      mode: never
 #      schema-locations: classpath:schema1.sql
 #      data-locations: classpath:data1.sql
 
