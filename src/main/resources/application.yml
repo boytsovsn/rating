@@ -29,7 +29,7 @@ spring:
   datasource:
     url: jdbc:postgresql://boytsovsn-ratingdb-af0d.twc1.net:5432/rating
     username: postgres
-    password: postgres
+    password: GrandMaster35*
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
