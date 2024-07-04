@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -14,5 +15,5 @@ public class GameResultsDto {
 
     List<GameResultDto> selectedResults;
 
-    private Set<GameResult> resultSet = Set.of(GameResult.values());
+    private Map<Long, Set<GameResultDto>> resultSets;
 }

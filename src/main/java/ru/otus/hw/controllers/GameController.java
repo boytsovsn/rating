@@ -86,7 +86,16 @@ public class GameController {
         List<GameDto> gamesDto = games.stream().map(GameDto::fromDomainObject).toList();
         model.addAttribute("games", gamesDto);
         List<GameResultDto> gameResults = gamesDto.stream().map(x->{return new GameResultDto(x.getId(), GameResult.NO_RESULT);}).toList();
-        GameResultsDto gameResultsDto = new GameResultsDto(gameResults, Set.of(GameResult.values()));
+        Map<Long, Set<GameResultDto>> gameResultSets = new LinkedHashMap<Long, Set<GameResultDto>>();
+        for (GameDto gameDto: gamesDto) {
+            Set<GameResultDto> gameResultSet = new LinkedHashSet<GameResultDto>();
+            for (GameResult gameResult : Set.of(GameResult.values())) {
+                GameResultDto gameResultDto = new GameResultDto(gameDto.getId(), gameResult);
+                gameResultSet.add(gameResultDto);
+            }
+            gameResultSets.put(gameDto.getId(), gameResultSet);
+        }
+        GameResultsDto gameResultsDto = new GameResultsDto(gameResults, gameResultSets);
         model.addAttribute("games_result", gameResultsDto);
         return "games";
     }

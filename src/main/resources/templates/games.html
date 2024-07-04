@@ -49,7 +49,7 @@
         <td>
                <select  th:id="'game-result-input' + ${game.id}" class="form-control" th:field="*{selectedResults}" type="text">
 <!--                    <option value="" th:text="#{id-field-should-has-expected-size} + ' ' + #{game-field-result}">Select result</option>-->
-                    <option th:each="selectedResult : *{resultSet}" th:value="${selectedResult}" th:text="${selectedResult.name}"></option>
+                    <option th:each="selectedResult : *{resultSets[game.id]}" th:value="${selectedResult}" th:text="${selectedResult.name}"></option>
                 </select>
         </td>
     </tr>
