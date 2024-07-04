@@ -7,10 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.calculation.RatingCalculator;
 import ru.otus.hw.exceptions.RatingCalculationException;
-import ru.otus.hw.models.dto.CheckedPlayersDto;
-import ru.otus.hw.models.dto.GameDto;
-import ru.otus.hw.models.dto.GameResult;
-import ru.otus.hw.models.dto.GameResultsDto;
+import ru.otus.hw.models.dto.*;
 import ru.otus.hw.models.entities.*;
 import ru.otus.hw.repositories.CompetitionRepository;
 import ru.otus.hw.repositories.GameRepository;
@@ -88,7 +85,7 @@ public class GameController {
         List<Game> games = generateAllGames(tourneyPlayers);
         List<GameDto> gamesDto = games.stream().map(GameDto::fromDomainObject).toList();
         model.addAttribute("games", gamesDto);
-        List<GameResult> gameResults = gamesDto.stream().map(x->{return GameResult.NO_RESULT;}).toList();
+        List<GameResultDto> gameResults = gamesDto.stream().map(x->{return new GameResultDto(x.getId(), GameResult.NO_RESULT);}).toList();
         GameResultsDto gameResultsDto = new GameResultsDto(gameResults, Set.of(GameResult.values()));
         model.addAttribute("games_result", gameResultsDto);
         return "games";
@@ -149,28 +146,28 @@ public class GameController {
         List<Game> games = generateAllGames(tourneyPlayers);
         Float meanRating = meanTourneyRating(tourneyPlayers);
         Float coeff = RatingCalculator.tourneyCoefficient (meanRating);
-        int i = 0;
         if (foundSavedRating(tourneyPlayers)) {
             throw new RatingCalculationException("The tournament rating has already been saved!  Contact the administrator!");
         }
         if (gameResultsDto.getSelectedResults() == null) {
             throw new RatingCalculationException("Nothing to count on!");
         }
-        for (GameResult gameResult:gameResultsDto.getSelectedResults()) {
-           if (gameResult != GameResult.NO_RESULT) {
-               if (games != null && i<games.size()) {
-                   games.get(i).setResult(gameResult.ordinal());
-                   if (gameResult == GameResult.FIRST_WIN) {
-                       games.get(i).getTourneyPlayer1().setRatingCurrent(RatingCalculator.winnerRating(games.get(i).getRating1(), games.get(i).getRating2(),coeff));
-                       games.get(i).getTourneyPlayer2().setRatingCurrent(RatingCalculator.loserRating(games.get(i).getRating1(), games.get(i).getRating2(),coeff));
-                   } else if (gameResult == GameResult.SECOND_WIN) {
-                       games.get(i).getTourneyPlayer2().setRatingCurrent(RatingCalculator.winnerRating(games.get(i).getRating2(), games.get(i).getRating1(),coeff));
-                       games.get(i).getTourneyPlayer1().setRatingCurrent(RatingCalculator.loserRating(games.get(i).getRating2(), games.get(i).getRating1(),coeff));
+        for (GameResultDto gameResultDto:gameResultsDto.getSelectedResults()) {
+           if (gameResultDto.getSelResult() != GameResult.NO_RESULT) {
+               final Long i = gameResultDto.getGameId();
+               if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
+                   Game game = games.stream().filter(x->x.getId()==i).findFirst().get();
+                   game.setResult(gameResultDto.getSelResult().ordinal());
+                   if (gameResultDto.getSelResult() == GameResult.FIRST_WIN) {
+                       game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.winnerRating(game.getRating1(), game.getRating2(),coeff));
+                       game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.loserRating(game.getRating1(), game.getRating2(),coeff));
+                   } else if (gameResultDto.getSelResult() == GameResult.SECOND_WIN) {
+                       game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.winnerRating(game.getRating2(), game.getRating1(),coeff));
+                       game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.loserRating(game.getRating2(), game.getRating1(),coeff));
                    }
-                   tourneyPlayerRepository.save(games.get(i).getTourneyPlayer1());
-                   tourneyPlayerRepository.save(games.get(i).getTourneyPlayer2());
-                   gameRepository.save(games.get(i));
-                   i = i + 1;
+                   tourneyPlayerRepository.save(game.getTourneyPlayer1());
+                   tourneyPlayerRepository.save(game.getTourneyPlayer2());
+                   gameRepository.save(game);
                } else {
                    throw new RatingCalculationException("Invalid number of games in the tournament!");
                }

@@ -1,3 +1,15 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
 spring:
   application:
     name: player-mvc docker
@@ -8,24 +20,73 @@ spring:
     encoding: UTF-8
   jmx:
     enabled: true
-#  jpa:
-#    generate-ddl: false
-#    #    generate-ddl: true
-#    hibernate:
-#      ddl-auto: none
-#  h2:
-#    console:
-#      enabled: true
-#  datasource:
-#      jdbc-url: h2:mem:mainDB
-#      username: sa
-#      password:
-#  sql:
-#    init:
-#      mode: never
-#      schema-locations: classpath:schema1.sql
-#      data-locations: classpath:data1.sql
-
+  profiles:
+    active:
+      dev
+---
+spring:
+  config:
+    activate:
+      on-profile: h2mem
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema1.sql
+      data-locations: classpath:data1.sql
+  datasource:
+    jdbc-url: h2:mem:mainDB
+    username: sa
+    password:
+  jpa:
+    generate-ddl: false
+    #    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+  rest:
+    basePath: /
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema1.sql
+      data-locations: classpath:data1.sql
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rating
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  rest:
+    basePath: /
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema1.sql
+      data-locations: classpath:data1.sql
   datasource:
     url: jdbc:postgresql://boytsovsn-ratingdb-af0d.twc1.net:5432/rating
     username: postgres
@@ -43,14 +104,3 @@ spring:
       filter:
         enabled: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-  health:
-    defaults:
-      enabled: true

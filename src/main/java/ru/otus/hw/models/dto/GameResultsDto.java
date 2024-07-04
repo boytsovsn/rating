@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class GameResultsDto {
 
-    List<GameResult> selectedResults;
+    List<GameResultDto> selectedResults;
 
     private Set<GameResult> resultSet = Set.of(GameResult.values());
 }
