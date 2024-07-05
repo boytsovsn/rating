@@ -87,13 +87,15 @@ public class GameController {
         model.addAttribute("games", gamesDto);
         List<GameResultDto> gameResults = gamesDto.stream().map(x->{return new GameResultDto(x.getId(), GameResult.NO_RESULT);}).toList();
         Map<Long, Set<GameResultDto>> gameResultSets = new LinkedHashMap<Long, Set<GameResultDto>>();
+        Long i = 0L;
         for (GameDto gameDto: gamesDto) {
             Set<GameResultDto> gameResultSet = new LinkedHashSet<GameResultDto>();
             for (GameResult gameResult : Set.of(GameResult.values())) {
                 GameResultDto gameResultDto = new GameResultDto(gameDto.getId(), gameResult);
                 gameResultSet.add(gameResultDto);
             }
-            gameResultSets.put(gameDto.getId(), gameResultSet);
+            gameResultSets.put(i, gameResultSet);
+            i++;
         }
         GameResultsDto gameResultsDto = new GameResultsDto(gameResults, gameResultSets);
         model.addAttribute("games_result", gameResultsDto);
