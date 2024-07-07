@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class GameResultsDto {
 
-    List<GameResultDto> selectedResults;
+    List<String> selectedResults;
 
     private Map<Long, Set<GameResultDto>> resultSets;
 }

@@ -85,12 +85,12 @@ public class GameController {
         List<Game> games = generateAllGames(tourneyPlayers);
         List<GameDto> gamesDto = games.stream().map(GameDto::fromDomainObject).toList();
         model.addAttribute("games", gamesDto);
-        List<GameResultDto> gameResults = gamesDto.stream().map(x->{return new GameResultDto(x.getId(), GameResult.NO_RESULT);}).toList();
+        List<String> gameResults = gamesDto.stream().map(x->{return GameResult.NO_RESULT.name();}).toList();
         Map<Long, Set<GameResultDto>> gameResultSets = new LinkedHashMap<Long, Set<GameResultDto>>();
         Long i = 0L;
         for (GameDto gameDto: gamesDto) {
             Set<GameResultDto> gameResultSet = new LinkedHashSet<GameResultDto>();
-            for (GameResult gameResult : Set.of(GameResult.values())) {
+            for (GameResult gameResult : GameResult.values()) {
                 GameResultDto gameResultDto = new GameResultDto(gameDto.getId(), gameResult);
                 gameResultSet.add(gameResultDto);
             }
@@ -146,6 +146,24 @@ public class GameController {
         return "redirect:/tourneyplayer"+s;
     }
 
+    GameResultDto parseGameResultString(String gameResultString)
+    {
+        String[] params = gameResultString.replace("(", "").replace(")", "").split(",");
+        List<String> values = new ArrayList<String>();
+        for (String param : params) {
+            String[] svalues = param.split("=");
+            if (svalues.length > 1 && svalues[1] != null) {
+                values.add(svalues[1].trim());
+            }
+        }
+        if (values.size() != 2)
+            throw new RatingCalculationException("Incorrect game result:  %s".formatted(gameResultString));
+        Long id = Long.valueOf(values.get(0));
+        GameResult gameResult = GameResult.getValueByName(values.get(1));
+        GameResultDto gameResultDto = new GameResultDto(id, gameResult);
+        return gameResultDto;
+    }
+
     @PutMapping("/game")
     public String addResultGames(
               @RequestParam(value = "competition_id", required = false) Long competitionId
@@ -163,24 +181,49 @@ public class GameController {
         if (gameResultsDto.getSelectedResults() == null) {
             throw new RatingCalculationException("Nothing to count on!");
         }
-        for (GameResultDto gameResultDto:gameResultsDto.getSelectedResults()) {
-           if (gameResultDto.getSelResult() != GameResult.NO_RESULT) {
-               final Long i = gameResultDto.getGameId();
-               if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
-                   Game game = games.stream().filter(x->x.getId()==i).findFirst().get();
-                   game.setResult(gameResultDto.getSelResult().ordinal());
-                   if (gameResultDto.getSelResult() == GameResult.FIRST_WIN) {
-                       game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.winnerRating(game.getRating1(), game.getRating2(),coeff));
-                       game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.loserRating(game.getRating1(), game.getRating2(),coeff));
-                   } else if (gameResultDto.getSelResult() == GameResult.SECOND_WIN) {
-                       game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.winnerRating(game.getRating2(), game.getRating1(),coeff));
-                       game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.loserRating(game.getRating2(), game.getRating1(),coeff));
-                   }
-                   tourneyPlayerRepository.save(game.getTourneyPlayer1());
-                   tourneyPlayerRepository.save(game.getTourneyPlayer2());
-                   gameRepository.save(game);
-               } else {
-                   throw new RatingCalculationException("Invalid number of games in the tournament!");
+        for (String gameResultString:gameResultsDto.getSelectedResults()) {
+            GameResultDto gameResultDto = parseGameResultString(gameResultString);
+            final Long i = gameResultDto.getGameId();
+            if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
+                Game game = games.stream().filter(x -> x.getId() == i).findFirst().get();
+                game.getTourneyPlayer1().setRatingCurrent(0F);
+                game.getTourneyPlayer2().setRatingCurrent(0F);
+            }
+        }
+        for (String gameResultString:gameResultsDto.getSelectedResults()) {
+            GameResultDto gameResultDto = parseGameResultString(gameResultString);
+            if (!gameResultDto.getSelResult().equals(GameResult.NO_RESULT)) {
+                final Long i = gameResultDto.getGameId();
+                if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
+                    Game game = games.stream().filter(x->x.getId()==i).findFirst().get();
+                    game.setResult(gameResultDto.getSelResult().ordinal());
+                    if (game.getTour()==1) {
+                        game.setRating1(game.getTourneyPlayer1().getRatingIn());
+                        game.setRating2(game.getTourneyPlayer2().getRatingIn());
+                    } else {
+                        if (game.getTourneyPlayer1().getRatingCurrent() != 0F) {
+                            game.setRating1(game.getTourneyPlayer1().getRatingCurrent());
+                        } else {
+                            game.setRating1(game.getTourneyPlayer1().getRatingIn());
+                        }
+                        if (game.getTourneyPlayer2().getRatingCurrent() != 0F) {
+                            game.setRating2(game.getTourneyPlayer2().getRatingCurrent());
+                        } else {
+                            game.setRating2(game.getTourneyPlayer2().getRatingIn());
+                        }
+                    }
+                    if (gameResultDto.getSelResult().equals(GameResult.FIRST_WIN)) {
+                        game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.winnerRating(game.getRating1(), game.getRating2(),coeff));
+                        game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.loserRating(game.getRating1(), game.getRating2(),coeff));
+                    } else if (gameResultDto.getSelResult().equals(GameResult.SECOND_WIN)) {
+                        game.getTourneyPlayer2().setRatingCurrent(RatingCalculator.winnerRating(game.getRating2(), game.getRating1(),coeff));
+                        game.getTourneyPlayer1().setRatingCurrent(RatingCalculator.loserRating(game.getRating2(), game.getRating1(),coeff));
+                    }
+                    tourneyPlayerRepository.save(game.getTourneyPlayer1());
+                    tourneyPlayerRepository.save(game.getTourneyPlayer2());
+                    gameRepository.save(game);
+                } else {
+                    throw new RatingCalculationException("Invalid number of games in the tournament!");
                }
            } else {
                throw new RatingCalculationException("Not all game results are given!");

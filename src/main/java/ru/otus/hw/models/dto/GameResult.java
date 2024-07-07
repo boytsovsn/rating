@@ -15,4 +15,13 @@ public enum GameResult {
             throw new EnumConstantNotPresentException(GameResult.class, "id = %d".formatted(id));
         }
     }
+
+    public static GameResult getValueByName(String name) throws EnumConstantNotPresentException {
+        for (GameResult value : values()) {
+            if (value.name().equals(name)) {
+                return value;
+            }
+        }
+        throw new EnumConstantNotPresentException(GameResult.class, "name = %s".formatted(name));
+    }
 }
