@@ -85,7 +85,7 @@ public class GameController {
         List<Game> games = generateAllGames(tourneyPlayers);
         List<GameDto> gamesDto = games.stream().map(GameDto::fromDomainObject).toList();
         model.addAttribute("games", gamesDto);
-        List<String> gameResults = gamesDto.stream().map(x->{return GameResult.NO_RESULT.name();}).toList();
+        List<String> gameResults = gamesDto.stream().map(x->{return /*GameResult.NO_RESULT.name()*/"";}).toList();
         Map<Long, Set<GameResultDto>> gameResultSets = new LinkedHashMap<Long, Set<GameResultDto>>();
         Long i = 0L;
         for (GameDto gameDto: gamesDto) {
@@ -188,6 +188,9 @@ public class GameController {
                 Game game = games.stream().filter(x -> x.getId() == i).findFirst().get();
                 game.getTourneyPlayer1().setRatingCurrent(0F);
                 game.getTourneyPlayer2().setRatingCurrent(0F);
+                tourneyPlayerRepository.save(game.getTourneyPlayer1());
+                tourneyPlayerRepository.save(game.getTourneyPlayer2());
+                gameRepository.save(game);
             }
         }
         for (String gameResultString:gameResultsDto.getSelectedResults()) {
@@ -197,6 +200,10 @@ public class GameController {
                 if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
                     Game game = games.stream().filter(x->x.getId()==i).findFirst().get();
                     game.setResult(gameResultDto.getSelResult().ordinal());
+                    TourneyPlayer tourneyPlayer1 = tourneyPlayerRepository.findById(game.getTourneyPlayer1().getId()).orElseThrow(()->new RatingCalculationException("Not found the first player for game: %s".formatted(game.toString())));
+                    TourneyPlayer tourneyPlayer2 = tourneyPlayerRepository.findById(game.getTourneyPlayer2().getId()).orElseThrow(()->new RatingCalculationException("Not found the second player for game: %s".formatted(game.toString())));
+                    game.setTourneyPlayer1(tourneyPlayer1);
+                    game.setTourneyPlayer2(tourneyPlayer2);
                     if (game.getTour()==1) {
                         game.setRating1(game.getTourneyPlayer1().getRatingIn());
                         game.setRating2(game.getTourneyPlayer2().getRatingIn());

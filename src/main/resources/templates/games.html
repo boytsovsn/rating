@@ -47,8 +47,8 @@
         <td th:text="${game.rating2}">100.2</td>
         <td th:text="${game.result}">NO_RESULT</td>
         <td>
-               <select  th:id="'game-result-input' + ${game.id}" class="form-control" th:field="*{selectedResults}" type="text">
-                    <option th:each="selectedResult: *{resultSets[__${gameState.index}__]}" th:selected="${selectedResult.selResult.ordinal} == ${game.result}" th:value="${selectedResult}" th:text="${selectedResult.selResult.name}"></option>
+               <select  th:id="'selectedResults' + ${game.id}" class="form-control" name="selectedResults" type="text">
+                    <option th:each="selectedResult: *{resultSets[__${gameState.index}__]}" th:selected="${selectedResult.selResult.name eq game.result.name}" th:value="${selectedResult}" th:text="${selectedResult.selResult.name}"></option>
                 </select>
         </td>
     </tr>
