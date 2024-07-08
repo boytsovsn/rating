@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.models.dto.CompetitionDto;
 import ru.otus.hw.models.entities.Competition;
-import ru.otus.hw.models.entities.Player;
 import ru.otus.hw.repositories.CompetitionRepository;
 
 import java.sql.Date;
@@ -60,9 +59,9 @@ public class CompetitionController {
 
     @PutMapping("/competition/{id}")
     public String editCompetition(@PathVariable("id") String id, @Valid @ModelAttribute("competitionDto") CompetitionDto competitionDto,
-                             BindingResult bindingResult, Model model) {
+                                  BindingResult bindingResult, Model model) {
         if (!bindingResult.hasErrors()) {
-            if (competitionDto.getId()!=null && !competitionDto.getId().equals(0L) &&
+            if (competitionDto.getId() != null && !competitionDto.getId().equals(0L) &&
                     id != null && id.equals(competitionDto.getId().toString())) {
                 competitionRepository.save(competitionDto.toDomainObject());
                 return "redirect:/competition";
@@ -76,9 +75,9 @@ public class CompetitionController {
 
     @PostMapping("/competition")
     public String createCompetition(@Valid @ModelAttribute("competitionDto") CompetitionDto competitionDto,
-                               BindingResult bindingResult, Model model) {
+                                    BindingResult bindingResult, Model model) {
         if (!bindingResult.hasErrors()) {
-            if (competitionDto.getId()==null || competitionDto.getId().equals(0L)) {
+            if (competitionDto.getId() == null || competitionDto.getId().equals(0L)) {
                 competitionRepository.save(competitionDto.toDomainObject());
             }
             return "redirect:/competition";

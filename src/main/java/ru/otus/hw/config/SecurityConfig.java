@@ -2,6 +2,7 @@ package ru.otus.hw.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,8 +27,12 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( ( authorize ) -> authorize
-                        .requestMatchers( "/error", "/favicon.ico", "/*.css", "/*.png").permitAll()
-                        .requestMatchers( "/" ).authenticated()
+                        .requestMatchers( HttpMethod.GET, "/error", "/favicon.ico", "/*.css", "/*.png", "/list", "/").permitAll()
+                        .requestMatchers( HttpMethod.GET, "/list", "/player*", "/player*/**", "/actuator*", "/actuator/**"
+                               , "/rating**", "/rating*/**",  "/game**", "/game*/**"
+                               ,  "/competition**",  "/competition*/**"
+                               ,  "/tourney**",  "/tourney*/**" ).permitAll()
+                        .requestMatchers("/" ).authenticated()
                         .requestMatchers( "/list", "/player*", "/player*/**", "/actuator*", "/actuator/**"
                                 , "/rating**", "/rating*/**",  "/game**", "/game*/**"
                                 ,  "/competition**",  "/competition*/**"

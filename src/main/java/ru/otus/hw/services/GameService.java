@@ -1,8 +1,6 @@
 package ru.otus.hw.services;
 
-import ru.otus.hw.models.entities.Competition;
 import ru.otus.hw.models.entities.Game;
-import ru.otus.hw.models.entities.Tourney;
 import ru.otus.hw.models.entities.TourneyPlayer;
 
 import java.util.List;
