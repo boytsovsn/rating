@@ -58,8 +58,8 @@ spring:
       on-profile: dev
   sql:
     init:
-      mode: never
-      schema-locations: classpath:schema1.sql
+      mode: always
+#      schema-locations: classpath:schema1.sql
       data-locations: classpath:data1.sql
   datasource:
     url: jdbc:postgresql://localhost:5432/rating
@@ -84,8 +84,8 @@ spring:
       on-profile: prod
   sql:
     init:
-      mode: never
-      schema-locations: classpath:schema1.sql
+      mode: always
+#      schema-locations: classpath:schema1.sql
       data-locations: classpath:data1.sql
   datasource:
     url: jdbc:postgresql://boytsovsn-ratingdb-af0d.twc1.net:5432/rating
