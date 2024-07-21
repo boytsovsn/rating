@@ -43,7 +43,9 @@ public class PlayerServiceImpl implements PlayerService {
                 }
             }
         }
-        return players;
+        Comparator<Player> compareByRating = Comparator.comparing(Player::getRatingCurrent);
+        ArrayList<Player> sortedPlayer = players.stream().sorted(compareByRating).collect(Collectors.toCollection(ArrayList::new));
+        return sortedPlayer;
     }
 
     @Transactional
