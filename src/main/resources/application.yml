@@ -22,7 +22,7 @@ spring:
     enabled: true
   profiles:
     active:
-      prod
+      dev
 ---
 spring:
   config:

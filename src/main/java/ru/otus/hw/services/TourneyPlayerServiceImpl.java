@@ -17,7 +17,7 @@ public class TourneyPlayerServiceImpl implements TourneyPlayerService {
     private final EntityManager em;
 
     public List<TourneyPlayer> findPlayersByTourney(Long tourneyId) {
-        List<TourneyPlayer> tourneyPlayers = em.createQuery("select tp from TourneyPlayer tp left join fetch tp.tourney t where t.id = :tid")
+        List<TourneyPlayer> tourneyPlayers = em.createQuery("select tp from TourneyPlayer tp left join fetch tp.tourney t where t.id = :tid order by tp.ratingIn desc")
                 .setParameter("tid", tourneyId).getResultList();
         return tourneyPlayers;
     }
