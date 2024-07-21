@@ -43,7 +43,7 @@ public class PlayerServiceImpl implements PlayerService {
                 }
             }
         }
-        Comparator<Player> compareByRating = Comparator.comparing(Player::getRatingCurrent);
+        Comparator<Player> compareByRating = Comparator.comparing(Player::getRatingCurrent).reversed();
         ArrayList<Player> sortedPlayer = players.stream().sorted(compareByRating).collect(Collectors.toCollection(ArrayList::new));
         return sortedPlayer;
     }
