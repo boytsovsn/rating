@@ -50,13 +50,13 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Transactional
     @Override
-    public Player insert(String name, String birthPlace, Date birthDate, String location, Boolean gender) {
+    public Player insert(String name, String birthPlace, Date birthDate, String location, Integer gender) {
         return save(null, name, birthPlace, birthDate, location, gender);
     }
 
     @Transactional
     @Override
-    public Player update(Long id, String name, String birthPlace, Date birthDate, String location, Boolean gender) {
+    public Player update(Long id, String name, String birthPlace, Date birthDate, String location, Integer gender) {
         return save(id, name, birthPlace, birthDate, location, gender);
     }
 
@@ -77,7 +77,7 @@ public class PlayerServiceImpl implements PlayerService {
         deleteById(player.getId());
     }
 
-    private Player save(Long id, String name, String birthPlace, Date birthDate, String location, Boolean gender) {
+    private Player save(Long id, String name, String birthPlace, Date birthDate, String location, Integer gender) {
         Player player;
         if (id!=null && !id.equals(0L)) {
             var ratings = ratingService.findByPlayerId(id);

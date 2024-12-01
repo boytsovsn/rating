@@ -33,7 +33,7 @@ public class Users implements UserDetails {
 
     private String password;
 
-    private Boolean lock;
+    private Integer lock;
 
     private String role;
 
@@ -60,7 +60,7 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !lock;
+        return lock == 1;
     }
 
     @Override

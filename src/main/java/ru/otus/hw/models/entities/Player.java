@@ -29,7 +29,7 @@ public class Player {
 
     private String location;
 
-    private Boolean gender;
+    private Integer gender;
 
     @Transient
     private Float ratingCurrent = 0.0F;
@@ -48,7 +48,7 @@ public class Player {
         this.rating = ratings;
     }
 
-    public Player(String name, String birthPlace, Date birthDate, String location, Boolean gender, List<Rating> ratings) {
+    public Player(String name, String birthPlace, Date birthDate, String location, Integer gender, List<Rating> ratings) {
         this.name = name;
         this.birthPlace = birthPlace;
         this.birthDate = birthDate;
@@ -57,7 +57,7 @@ public class Player {
         this.rating = ratings;
     }
 
-    public Player(Long id, String name, String birthPlace, Date birthDate, String location, Boolean gender, List<Rating> ratings) {
+    public Player(Long id, String name, String birthPlace, Date birthDate, String location, Integer gender, List<Rating> ratings) {
         this.id = id;
         this.name = name;
         this.birthPlace = birthPlace;
@@ -67,7 +67,7 @@ public class Player {
         this.rating = ratings;
     }
 
-    public Player(String name, String birthPlace, Date birthDate, String location, Boolean gender) {
+    public Player(String name, String birthPlace, Date birthDate, String location, Integer gender) {
         this.name = name;
         this.birthPlace = birthPlace;
         this.birthDate = birthDate;

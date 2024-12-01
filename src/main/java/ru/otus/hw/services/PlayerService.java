@@ -17,9 +17,9 @@ public interface PlayerService {
     @PostFilter("hasPermission(filterObject, 'READ')")
     List<Player> findAll();
 
-    Player insert(String name, String birthPlace, Date birthDate, String location, Boolean gender);
+    Player insert(String name, String birthPlace, Date birthDate, String location, Integer gender);
 
-    Player update(Long id, String name, String birthPlace, Date birthDate, String location, Boolean gender);
+    Player update(Long id, String name, String birthPlace, Date birthDate, String location, Integer gender);
 
     @PreAuthorize("hasPermission(#player, 'WRITE')")
     Player update(@Param("player") Player player);

@@ -26,7 +26,7 @@ public class PlayerDto {
 
     private String location;
 
-    private Boolean gender;
+    private Integer gender;
 
     private Float ratingCurrent = 0.0F;
 

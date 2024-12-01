@@ -2,7 +2,7 @@ drop table if exists users;
 
 CREATE TABLE IF NOT EXISTS users (
                                      id bigserial not null,
-                                     lock boolean,
+                                     lock Bigint,
                                      email varchar(255),
                                      firstname varchar(255),
                                      lastname varchar(255),
@@ -39,7 +39,7 @@ CREATE TABLE  Players
     Birth_Place  Character varying(200),
     Birth_Date  Date,
     Location  Character varying(200),
-    Gender  Boolean
+    Gender  Bigint
 )
     WITH (
         autovacuum_enabled=true)

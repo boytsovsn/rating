@@ -36,7 +36,7 @@ public class PlayerController {
                 playerDto = new PlayerDto(player.getId(), player.getName(), player.getBirthPlace(), player.getBirthDate(), player.getLocation(), player.getGender(), player.getRatingCurrent(), null);
             }
         } else {
-            playerDto = new PlayerDto(0L, "", "", new Date(90, 00, 01), "", true, 0F, null);
+            playerDto = new PlayerDto(0L, "", "", new Date(90, 00, 01), "", 1, 0F, null);
             sReturn = "create";
         }
         if (playerDto != null) {
