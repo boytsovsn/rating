@@ -33,10 +33,10 @@ public class PlayerController {
         if (id != null && !id.equals(0L)) {
             Player player = playerService.findById(id);
             if (player != null) {
-                playerDto = new PlayerDto(player.getId(), player.getName(), player.getBirthPlace(), player.getBirthDate(), player.getLocation(), player.getGender(), player.getRatingCurrent(), null);
+                playerDto = new PlayerDto(player.getId(), player.getName(), player.getBirthPlace(), player.getBirthDate(), player.getLocation(), player.getGender() == 1, player.getRatingCurrent(), null);
             }
         } else {
-            playerDto = new PlayerDto(0L, "", "", new Date(90, 00, 01), "", 1, 0F, null);
+            playerDto = new PlayerDto(0L, "", "", new Date(90, 00, 01), "", true, 0F, null);
             sReturn = "create";
         }
         if (playerDto != null) {
@@ -75,7 +75,7 @@ public class PlayerController {
                              BindingResult bindingResult, Model model) {
         if (!bindingResult.hasErrors()) {
             if (playerDto.getId()==null || playerDto.getId().equals(0L)) {
-                playerService.insert(playerDto.getName(), playerDto.getBirthPlace(), playerDto.getBirthDate(), playerDto.getLocation(), playerDto.getGender());
+                playerService.insert(playerDto.getName(), playerDto.getBirthPlace(), playerDto.getBirthDate(), playerDto.getLocation(), playerDto.getGender() ? 1 : 0);
             }
             return "redirect:/";
         } else {

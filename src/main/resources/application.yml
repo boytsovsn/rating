@@ -22,7 +22,7 @@ spring:
     enabled: true
   profiles:
     active:
-      prod
+      dev
 ---
 spring:
   config:
@@ -56,10 +56,36 @@ spring:
   config:
     activate:
       on-profile: dev
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath:schema_mysql.sql
+#      data-locations: classpath:data1.sql
+  datasource:
+    url: jdbc:mysql://localhost:3306/rating?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: Crf;bvyt
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+  rest:
+    basePath: /
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
   sql:
     init:
       mode: always
-#      schema-locations: classpath:schema1.sql
+      #      schema-locations: classpath:schema1.sql
       data-locations: classpath:data1.sql
   datasource:
     url: jdbc:postgresql://localhost:5432/rating

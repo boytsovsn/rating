@@ -26,7 +26,7 @@ public class PlayerDto {
 
     private String location;
 
-    private Integer gender;
+    private Boolean gender;
 
     private Float ratingCurrent = 0.0F;
 
@@ -38,11 +38,11 @@ public class PlayerDto {
     }
 
     public Player toDomainObject(){
-        return new Player(id, name, birthPlace, birthDate, location, gender, ratingCurrent, null);
+        return new Player(id, name, birthPlace, birthDate, location, gender != null && gender ? 1 : 0, ratingCurrent, null);
     }
 
     public static PlayerDto fromDomainObject(Player player) {
-        return new PlayerDto(player.getId(), player.getName(), player.getBirthPlace(), player.getBirthDate(), player.getLocation(), player.getGender(), player.getRatingCurrent(), "on");
+        return new PlayerDto(player.getId(), player.getName(), player.getBirthPlace(), player.getBirthDate(), player.getLocation(), player.getGender() != null && player.getGender() == 1 ? true: false, player.getRatingCurrent(), "on");
     }
 
 }

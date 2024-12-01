@@ -86,7 +86,7 @@ public class PlayerControllerTest {
     @DisplayName("Редактирование игрока")
     public void editPlayerPut() throws Exception {
         PlayerDto playerDto = new PlayerDto(3L, "Test");
-        playerDto.setGender(1);
+        playerDto.setGender(true);
         mockMvc.perform(MockMvcRequestBuilders.put("/player/3")
                 .param("id", playerDto.getId().toString())
                 .param("title", playerDto.getName())
@@ -104,7 +104,7 @@ public class PlayerControllerTest {
     @DisplayName("Создание игрока")
     public void createPlayerPost() throws Exception {
         PlayerDto playerDto = new PlayerDto(0L, "Test");
-        playerDto.setGender(1);
+        playerDto.setGender(true);
         mockMvc.perform(MockMvcRequestBuilders.post("/player")
                         .param("title", playerDto.getName())
                         .param("gender", playerDto.getGender().toString())

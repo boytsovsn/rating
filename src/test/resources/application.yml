@@ -2,10 +2,10 @@ spring:
   messages:
     encoding: UTF-8
   datasource:
-    url: jdbc:postgresql://localhost:5432/testRating
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:mysl://localhost:3306/testRating
+    username: rating_user
+    password: rating_crf;bvyt
+    driver-class-name: com.mysql.jdbc.Driver
   sql:
     init:
       mode: never
