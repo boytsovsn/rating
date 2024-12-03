@@ -25,10 +25,11 @@
 -- ALTER SEQUENCE competitions_id_seq RESTART WITH 4;
 -- ALTER SEQUENCE tourneys_id_seq RESTART WITH 6;
 -- ALTER SEQUENCE games_id_seq RESTART WITH 1;
--- delete from users;
 
--- insert into users(id, login, password, role, lock) values
--- (1, 'admin', 'Ytcrf;e', 'EDITOR', false),
--- (2, 'user', 'Crf;bvytult', 'USER', false);
+delete from users where id in (1,2);
+
+insert into users(id, login, password, role) values
+(1, 'admin', 'Ytcrf;e', 'EDITOR'),
+(2, 'user', 'Crf;bvytult', 'USER');
 update users set password =  'Ytcrf;e' where id =1;
 update users set password =  'Crf;bvytult' where id =2;
