@@ -63,8 +63,8 @@ spring:
       data-locations: classpath:data1.sql
   datasource:
     url: jdbc:mysql://localhost:3306/rating?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: Crf;bvyt
+    username: user_rating
+    password: Rating-pass39
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
