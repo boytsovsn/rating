@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  mysql8:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Crf;bvyt
+      MYSQL_DATABASE: rating
+      MYSQL_USER: rating_user
+      MYSQL_PASSWORD: rating_crf;bvyt
+    volumes:
+      - /mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    depends_on:
+      - mysql8
+    environment:
+      PMA_HOST: mysql8
+      MYSQL_ROOT_PASSWORD: Crf;bvyt
+    ports:
+      - "8084:80"
