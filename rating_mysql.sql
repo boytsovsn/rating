@@ -1,56 +1,55 @@
-﻿/*
-Created: 01.12.2024
-Modified: 01.12.2024
-Model: mySQL 8
-Database: MySQL 8.0
-*/
-
--- Create tables section -------------------------------------------------
-
--- Table Players
-
+﻿-- Created: 01.12.2024
+-- Modified: 01.12.2024
+-- Model: mySQL 8
+-- Database: MySQL 8.0
+-- */
+--
+-- -- Create tables section -------------------------------------------------
+--
+-- -- Table players
+--
 CREATE TABLE `players`
 (
-  `id` Serial NOT NULL,
-  `name` Varchar(200) NOT NULL,
-  `birth_place` Varchar(200),
-  `birth_date` Date,
-  `location` Varchar(200),
-  `gender` Bigint
+    `id` Serial NOT NULL,
+    `name` Varchar(200) NOT NULL,
+    `birth_place` Varchar(200),
+    `birth_date` Date,
+    `location` Varchar(200),
+    `gender` Bigint
 )
 ;
 
 ALTER TABLE `players` ADD PRIMARY KEY (`id`)
 ;
 
--- Table Ratings
+-- Table ratings
 
 CREATE TABLE `ratings`
 (
-  `id` Serial NOT NULL,
-  `player_id` Serial NOT NULL,
-  `rating_in` Float,
-  `rating_current` Float,
-  `rating_out` Float,
-  `year` Smallint NOT NULL,
-  `month` Smallint NOT NULL,
-  `week` Smallint NOT NULL
+    `id` Serial NOT NULL,
+    `player_id` Bigint UNSIGNED NOT NULL,
+    `rating_in` Float,
+    `rating_current` Float,
+    `rating_out` Float,
+    `year` Smallint NOT NULL,
+    `month` Smallint NOT NULL,
+    `week` Smallint NOT NULL
 )
 ;
 
 ALTER TABLE `ratings` ADD PRIMARY KEY (`player_id`, `id`)
 ;
 
--- Table Tourneys
+-- Table tourneys
 
 CREATE TABLE `tourneys`
 (
-  `id` Serial NOT NULL,
-  `competition_id` Serial NOT NULL,
-  `title` Varchar(200) NOT NULL,
-  `type` Bigint NOT NULL,
-  `rank` Smallint NOT NULL,
-  `stage` Smallint NOT NULL
+    `id` Serial NOT NULL,
+    `competition_id` bigint UNSIGNED  NOT NULL,
+    `title` Varchar(200) NOT NULL,
+    `type` Bigint NOT NULL,
+    `tour_rank` Smallint NOT NULL,
+    `stage` Smallint NOT NULL
 )
 ;
 
@@ -60,32 +59,32 @@ CREATE INDEX `IX_Relationship5` ON `tourneys` (`competition_id`)
 ALTER TABLE `tourneys` ADD PRIMARY KEY (`id`)
 ;
 
--- Table Competitions
+-- Table competitions
 
 CREATE TABLE `competitions`
 (
-  `id` Serial NOT NULL,
-  `title` Varchar(200) NOT NULL,
-  `date` Date NOT NULL,
-  `location` Varchar(200) NOT NULL
+    `id` Serial NOT NULL,
+    `title` Varchar(200) NOT NULL,
+    `date` Date NOT NULL,
+    `location` Varchar(200) NOT NULL
 )
 ;
 
 ALTER TABLE `competitions` ADD PRIMARY KEY (`id`)
 ;
 
--- Table Games
+-- Table games
 
 CREATE TABLE `games`
 (
-  `id` Serial NOT NULL,
-  `tour` Smallint NOT NULL,
-  `rating1` Float NOT NULL,
-  `rating2` Float NOT NULL,
-  `result` Smallint NOT NULL,
-  `tourney_id` Serial NOT NULL,
-  `tourney_player1_id` Serial NOT NULL,
-  `tourney_player2_id` Serial NOT NULL
+    `id` Serial NOT NULL,
+    `tour` Smallint NOT NULL,
+    `rating1` Float NOT NULL,
+    `rating2` Float NOT NULL,
+    `result` Smallint NOT NULL,
+    `tourney_id` bigint UNSIGNED NOT NULL,
+    `tourney_player1_id` bigint UNSIGNED NOT NULL,
+    `tourney_player2_id` bigint UNSIGNED NOT NULL
 )
 ;
 
@@ -98,16 +97,16 @@ CREATE INDEX `IX_Relationship28` ON `games` (`tourney_id`, `tourney_player1_id`)
 ALTER TABLE `games` ADD PRIMARY KEY (`id`)
 ;
 
--- Table Tourney_Players
+-- Table tourney_players
 
 CREATE TABLE `tourney_players`
 (
-  `id` Serial NOT NULL,
-  `tourney_id` Serial NOT NULL,
-  `player_id` Serial NOT NULL,
-  `rating_in` Float,
-  `rating_current` Float,
-  `rating_out` Float
+    `id` Serial NOT NULL,
+    `tourney_id` bigint UNSIGNED NOT NULL,
+    `player_id` bigint UNSIGNED NOT NULL,
+    `rating_in` Float,
+    `rating_current` Float,
+    `rating_out` Float
 )
 ;
 
