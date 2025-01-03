@@ -77,6 +77,6 @@ public class TourneyDto {
     }
 
     public static TourneyDto fromDomainObject(Tourney tourney) {
-        return new TourneyDto(tourney.getId(), tourney.getTitle(), TourneyType.getValueById(tourney.getType()), Rank.getValueById(tourney.getRank()), Stage.getValueById(tourney.getStage()), tourney.getCompetition().getId());
+        return new TourneyDto(tourney.getId(), tourney.getTitle(), TourneyType.getValueById(tourney.getType()), Rank.getValueById(tourney.getTourRank()), Stage.getValueById(tourney.getStage()), tourney.getCompetition().getId());
     }
 }

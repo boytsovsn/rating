@@ -7,7 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.calculation.RatingCalculator;
 import ru.otus.hw.exceptions.RatingCalculationException;
-import ru.otus.hw.models.dto.*;
+import ru.otus.hw.models.dto.GameDto;
+import ru.otus.hw.models.dto.GameResult;
+import ru.otus.hw.models.dto.GameResultDto;
+import ru.otus.hw.models.dto.GameResultsDto;
 import ru.otus.hw.models.entities.*;
 import ru.otus.hw.repositories.CompetitionRepository;
 import ru.otus.hw.repositories.GameRepository;
@@ -146,8 +149,20 @@ public class GameController {
         return "redirect:/tourneyplayer"+s;
     }
 
-    GameResultDto parseGameResultString(String gameResultString)
+
+    boolean resultInTwoStrings(String gameResultString1, String gameResultString2) {
+        return (gameResultString2 != null
+                && gameResultString1.startsWith("GameResultDto(gameId=")
+                && gameResultString2.startsWith("selResult="));
+    }
+
+    GameResultDto parseGameResultString(String gameResultString1, String gameResultString2)
     {
+        String gameResultString = gameResultString1;
+        if (resultInTwoStrings(gameResultString1, gameResultString2)) {
+            // Случай для одной игры: строка с результатом игры распадается на две строки, поэтому соединяем их
+            gameResultString = gameResultString1+","+gameResultString2;
+        }
         String[] params = gameResultString.replace("(", "").replace(")", "").split(",");
         List<String> values = new ArrayList<String>();
         for (String param : params) {
@@ -181,10 +196,16 @@ public class GameController {
         if (gameResultsDto.getSelectedResults() == null) {
             throw new RatingCalculationException("Nothing to count on!");
         }
-        for (String gameResultString:gameResultsDto.getSelectedResults()) {
-            GameResultDto gameResultDto = parseGameResultString(gameResultString);
+
+        for (int k=0; k<gameResultsDto.getSelectedResults().size(); k++) {
+            String gameResultString = gameResultsDto.getSelectedResults().get(k);
+            String nextString = k+1<gameResultsDto.getSelectedResults().size()?gameResultsDto.getSelectedResults().get(k+1):null;
+            GameResultDto gameResultDto = parseGameResultString(gameResultString, nextString);
+            if (resultInTwoStrings(gameResultString, nextString)) {
+                k++;
+            }
             final Long i = gameResultDto.getGameId();
-            if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {
+            if (games != null && games.stream().filter(x -> x.getId() == i).findFirst().isPresent()) {
                 Game game = games.stream().filter(x -> x.getId() == i).findFirst().get();
                 game.getTourneyPlayer1().setRatingCurrent(0F);
                 game.getTourneyPlayer2().setRatingCurrent(0F);
@@ -193,8 +214,13 @@ public class GameController {
                 gameRepository.save(game);
             }
         }
-        for (String gameResultString:gameResultsDto.getSelectedResults()) {
-            GameResultDto gameResultDto = parseGameResultString(gameResultString);
+        for (int k=0; k<gameResultsDto.getSelectedResults().size(); k++) {
+            String gameResultString = gameResultsDto.getSelectedResults().get(k);
+            String nextString = k+1<gameResultsDto.getSelectedResults().size()?gameResultsDto.getSelectedResults().get(k+1):null;
+            GameResultDto gameResultDto = parseGameResultString(gameResultString, nextString);
+            if (resultInTwoStrings(gameResultString, nextString)) {
+                k++;
+            }
             if (!gameResultDto.getSelResult().equals(GameResult.NO_RESULT)) {
                 final Long i = gameResultDto.getGameId();
                 if (games != null && games.stream().filter(x->x.getId()==i).findFirst().isPresent()) {

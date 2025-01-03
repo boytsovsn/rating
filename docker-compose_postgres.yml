@@ -8,16 +8,16 @@ services:
       - "8080:8080"
     # Эти свойства перегружают соответствующие в application.yml
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rating
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecology
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
   postgres:
-    image: postgres:13.3
+    image: postgis/postgis
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=rating
+      - POSTGRES_DB=ecology
 
 
